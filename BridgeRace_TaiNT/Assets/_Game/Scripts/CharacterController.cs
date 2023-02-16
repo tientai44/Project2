@@ -14,7 +14,6 @@ public class CharacterController : MonoBehaviour
     private float brickHeight=0.05f;
     private void Start()
     {
-        GetComponent<Renderer>().material.color = Color.blue;
     }
     private void Update()
     {

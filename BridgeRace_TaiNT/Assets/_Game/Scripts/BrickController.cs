@@ -13,7 +13,7 @@ public class BrickController : MonoBehaviour
         if (other.tag == "Player" && other.gameObject.GetComponent<Renderer>().material.color==gameObject.GetComponent<Renderer>().material.color)
         {
             other.gameObject.GetComponent<CharacterController>().AddBrick();
-            SpawnManager.GetInstance().StartCoroutine(SpawnManager.GetInstance().SpawnBrick(numFloor, transform.position));
+            SpawnManager.GetInstance().StartCoroutine(SpawnManager.GetInstance().SpawnBrick(numFloor, gameObject.GetComponent<Renderer>().material.color, transform.position));
             GameObjectPool.GetInstance().ReturnGameObject(gameObject);
         }
     }
