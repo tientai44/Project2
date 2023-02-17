@@ -26,6 +26,7 @@ public class SpawnManager : GOSingleton<SpawnManager>
     private void Start()
     {
         GetInstance();
+        // Add cac vi tri spawn cho g?ch
         for (int i = 0; i < floors[0].Height; i++)
         {
             for (int j = 0; j < floors[0].Width; j++)
@@ -37,7 +38,8 @@ public class SpawnManager : GOSingleton<SpawnManager>
 
     }
 
-    public void OnInit(int floor,Color c)
+    // Spawn random pos for new color
+    public void OnInit(int floor,Color c) 
     {
             while (true)
             {
@@ -64,14 +66,15 @@ public class SpawnManager : GOSingleton<SpawnManager>
         yield return new WaitForSeconds(5f);
         int index;
         List<Color> temp = new List<Color>();
+        // Add color brick not in limit
         foreach(Color c in floors[floor].Colors)
         {
-            Debug.Log(floors[floor].DictColor[c]);
             if (!floors[floor].isMax(c))
             {
                 temp.Add(c);
             }
         }
+        // spawn random 1 color form list color not limit
         if (temp.Count > 0)
         {
             index = Random.Range(0, temp.Count);
