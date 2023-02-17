@@ -31,34 +31,20 @@ public class SpawnManager : GOSingleton<SpawnManager>
             for (int j = 0; j < floors[0].Width; j++)
             {
                 l_pos.Add(floors[0].SpawnPos.transform.position + new Vector3(i - (int)floors[0].Height / 2, 0.1f, j - (int)floors[0].Width / 2));
-                //int index;
-                //do
-                //{
-                //    index = Random.Range(0, floors[0].Colors.Count);
-                //}
-                //while (floors[0].isMax(index));
-
-                ////blocks[0][i, j] = Instantiate(blockPrefabs[index], floors[0].position + new Vector3(i - (int)height / 2, 0.1f, j - (int)width / 2), blockPrefabs[index].transform.rotation, floors[0]);
-                //GameObject go= GameObjectPool.GetInstance().GetGameObject(floors[0].transform.position + new Vector3(i - (int)height / 2, 0.1f, j - (int)width / 2));
-                //go.GetComponent<Renderer>().material.color = floors[0].Colors[index];
-                //go.transform.SetParent(floors[0].transform);
-                //go.GetComponent<BrickController>().NumFloor = 0;
-                //floors[0].DictColor[floors[0].Colors[index]] += 1;
             }
         }
-        //colors.Add(Color.blue);
-        //colors.Add(Color.yellow);
-        //blocks.Add(new GameObject[height,width]);
+        
 
     }
 
-    public void OnInit(int floor)
+    public void OnInit(int floor,Color c)
     {
-        
-        foreach(Color c in floors[floor].Colors)
-        {
-            while (!floors[floor].isMax(c))
+            while (true)
             {
+                if (floors[floor].isMax(c))
+                {
+                    return;
+                }
                 if (l_pos.Count == 0)
                 {
                     return;
@@ -70,24 +56,28 @@ public class SpawnManager : GOSingleton<SpawnManager>
                 go.GetComponent<BrickController>().NumFloor = 0;
                 floors[0].DictColor[c] += 1;
                 l_pos.RemoveAt(index);
-
             }
-        }
-
     }
 
     public IEnumerator SpawnBrick(int floor,Color color,Vector3 pos) {
-        Debug.Log("Spawn");
         floors[0].DictColor[color] -= 1;
         yield return new WaitForSeconds(5f);
         int index;
-        do {
-            index = Random.Range(0, floors[floor].Colors.Count);
+        List<Color> temp = new List<Color>();
+        foreach(Color c in floors[floor].Colors)
+        {
+            Debug.Log(floors[floor].DictColor[c]);
+            if (!floors[floor].isMax(c))
+            {
+                temp.Add(c);
+            }
         }
-        while (floors[floor].isMax(index));
-        //Instantiate(blockPrefabs[index], pos, blockPrefabs[index].transform.rotation, floors[0]);
-        GameObject go = GameObjectPool.GetInstance().GetGameObject(pos);
-        go.GetComponent<Renderer>().material.color = floors[0].Colors[index];
-        floors[0].DictColor[floors[0].Colors[index]] += 1;
+        if (temp.Count > 0)
+        {
+            index = Random.Range(0, temp.Count);
+            GameObject go = GameObjectPool.GetInstance().GetGameObject(pos);
+            go.GetComponent<Renderer>().material.color = temp[index];
+            floors[0].DictColor[temp[index]] += 1;
+        }
     }
 }

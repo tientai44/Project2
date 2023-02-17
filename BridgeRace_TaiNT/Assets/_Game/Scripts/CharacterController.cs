@@ -9,7 +9,7 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private Transform brickPos;
     [SerializeField] private GameObject brickPrefab;
-    private List<GameObject> bricks=new List<GameObject>();
+    private Stack<GameObject> bricks=new Stack<GameObject>();
     private int brickOwner = 0;
     private float brickHeight=0.05f;
     private void Start()
@@ -34,8 +34,8 @@ public class CharacterController : MonoBehaviour
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         brickOwner++;
-        bricks.Add(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
-        bricks[bricks.Count-1].GetComponent<Renderer>().material.color = Color.blue;
+        bricks.Push(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
+        bricks.Peek().GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
 
     }
 

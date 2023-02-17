@@ -21,7 +21,7 @@ public class FloorController : MonoBehaviour
     {
         try
         {
-            maxBrickNum = (int)(height * width / SpawnManager.GetInstance().PlayerNumber) + 1;
+            maxBrickNum = (int)(height * width / SpawnManager.GetInstance().PlayerNumber);
         }
         catch 
         {
@@ -60,12 +60,9 @@ public class FloorController : MonoBehaviour
         {
             Debug.Log("Player Enter");
             colors.Add(collision.gameObject.GetComponent<Renderer>().material.color);
-            SpawnManager.GetInstance().OnInit(0);
+            SpawnManager.GetInstance().OnInit(0,collision.gameObject.GetComponent<Renderer>().material.color);
         }
-        //if (colors.Count ==2)
-        //{
-        //    SpawnManager.GetInstance().OnInit(0);
-        //}
+        
     }
     //private void OnCollisionExit(Collision collision)
     //{
