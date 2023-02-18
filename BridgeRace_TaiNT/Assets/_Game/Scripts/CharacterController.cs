@@ -4,39 +4,40 @@ using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
-    [SerializeField] private FixedJoystick _joystick;
     [SerializeField] private Animator _animator;
-    [SerializeField] private float _moveSpeed;
+    [SerializeField] protected float _moveSpeed;
     [SerializeField] private Transform brickPos;
     [SerializeField] private GameObject brickPrefab;
     private Stack<GameObject> bricks=new Stack<GameObject>();
     private int brickOwner = 0;
     private float brickHeight=0.05f;
+    [SerializeField] LayerMask layerMask;
     private void Start()
     {
     }
     private void Update()
     {
-        transform.Translate(Vector3.right * _joystick.Horizontal*Time.deltaTime*_moveSpeed);
-        transform.Translate(Vector3.forward * _joystick.Vertical*Time.deltaTime*_moveSpeed);
-
-        //_rigidbody.velocity = new Vector3(_joystick.Horizontal * _moveSpeed, _rigidbody.velocity.y, _joystick.Vertical * _moveSpeed);
-        //if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
-        //{
-        //    transform.rotation = Quaternion.LookRotation(_rigidbody.velocity);
-        //    _animator.SetBool("isRunning", true);
-        //}
-        //else
-        //    _animator.SetBool("isRunning", false);
+        
+        
     }
 
     public void AddBrick()
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         brickOwner++;
-        bricks.Push(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
+        //bricks.Push(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
+        bricks.Push(GameObjectPool.GetInstance().GetGameObject(brickPos.position + brickOwner * Vector3.up * brickHeight));
+        bricks.Peek().transform.SetParent(brickPos.transform);
         bricks.Peek().GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
-
     }
-
+    public void RemoveBrick()
+    {
+        bricks.Peek().transform.SetParent(null);
+        GameObjectPool.GetInstance().ReturnGameObject(bricks.Pop());
+        brickOwner--;
+    }
+    public bool isHaveBrick()
+    {
+        return bricks.Count > 0;
+    }
 }
