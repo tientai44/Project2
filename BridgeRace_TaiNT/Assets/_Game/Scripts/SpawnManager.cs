@@ -41,7 +41,7 @@ public class SpawnManager : GOSingleton<SpawnManager>
         {
             for (int j = 0; j < floors[floor].Width; j++)
             {
-                l_pos[floor].Add(floors[floor].SpawnPos.transform.position + new Vector3(i - (int)floors[floor].Height / 2, 0.1f, j - (int)floors[floor].Width / 2));
+                l_pos[floor].Add(floors[floor].SpawnPos.transform.position + new Vector3(i*1.5f - (int)floors[floor].Height / 2-1, 0.1f, j*1.5f - (int)floors[floor].Width / 2-1));
             }
         }
     }
@@ -90,6 +90,7 @@ public class SpawnManager : GOSingleton<SpawnManager>
         {
             index = Random.Range(0, temp.Count);
             GameObject go = GameObjectPool.GetInstance().GetGameObject(pos);
+            go.transform.rotation = brickPrefabs.transform.rotation;
             go.GetComponent<Renderer>().material.color = temp[index];
             go.GetComponent<BrickController>().NumFloor = floor;
             floors[floor].DictColor[temp[index]] += 1;

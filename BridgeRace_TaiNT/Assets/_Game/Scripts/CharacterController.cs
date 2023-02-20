@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 public class CharacterController : MonoBehaviour
 {
-    [SerializeField] private Rigidbody _rigidbody;
+    [SerializeField] protected Rigidbody _rigidbody;
     [SerializeField] private Animator _animator;
     [SerializeField] protected float _moveSpeed;
+    [SerializeField] protected float _rotateSpeed;
     [SerializeField] private Transform brickPos;
     [SerializeField] private GameObject brickPrefab;
     private Stack<GameObject> bricks=new Stack<GameObject>();
+    string currentAnimName;
+    [SerializeField] Animator anim;
     protected int brickOwner = 0;
-    private float brickHeight=0.05f;
+    private float brickHeight=0.15f;
     [SerializeField] LayerMask layerMask;
     protected FloorController currentFloor;
-
+    
     public FloorController CurrentFloor { get => currentFloor; set => currentFloor = value; }
 
     private void Start()
@@ -30,7 +33,7 @@ public class CharacterController : MonoBehaviour
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         brickOwner++;
         //bricks.Push(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
-        bricks.Push(GameObjectPool.GetInstance().GetGameObject(brickPos.position + brickOwner * Vector3.up * brickHeight));
+        bricks.Push(GameObjectPool.GetInstance().GetGameObject(brickPos.position + brickOwner * Vector3.up * brickHeight ));
         bricks.Peek().transform.rotation = transform.rotation;
         bricks.Peek().transform.SetParent(brickPos.transform);
         bricks.Peek().GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
@@ -44,5 +47,17 @@ public class CharacterController : MonoBehaviour
     public bool isHaveBrick()
     {
         return bricks.Count > 0;
+    }
+
+    protected void ChangeAnim(string animName)
+    {
+        if (currentAnimName != animName)
+        {
+            anim.ResetTrigger(animName);
+
+            currentAnimName = animName;
+
+            anim.SetTrigger(currentAnimName);
+        }
     }
 }

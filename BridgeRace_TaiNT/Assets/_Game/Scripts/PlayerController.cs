@@ -6,16 +6,48 @@ public class PlayerController : CharacterController
 {
     // Start is called before the first frame update
     [SerializeField] private FixedJoystick _joystick;
+    private Vector3 moveVector;
     void Start()
     {
         
     }
+    private void Move()
+    {
+        moveVector = Vector3.zero;
+        moveVector.x = _joystick.Horizontal * _moveSpeed * Time.deltaTime;
+        moveVector.z = _joystick.Vertical * _moveSpeed * Time.deltaTime;
 
+        if (_joystick.Horizontal != 0 || _joystick.Vertical != 0)
+        {
+            Vector3 direction = Vector3.RotateTowards(transform.forward, moveVector, _rotateSpeed * Time.deltaTime, 0.0f);
+            transform.rotation = Quaternion.LookRotation(direction);
+            Debug.Log("Run");
+            ChangeAnim("run");
+        }
+
+        else if (_joystick.Horizontal == 0 && _joystick.Vertical == 0)
+        {
+            Debug.Log("Idle");
+            ChangeAnim("idle");
+        }
+        transform.position = Vector3.Lerp(transform.position, transform.position + moveVector,1);
+    }
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(Vector3.right * _joystick.Horizontal * Time.deltaTime * _moveSpeed);
-        transform.Translate(Vector3.forward * _joystick.Vertical * Time.deltaTime * _moveSpeed);
+        Move();
+        //    if(_joystick.Horizontal !=0 || _joystick.Vertical != 0)
+        //    {
+        //        ChangeAnim("run");
+        //    }
+        //    else
+        //    {
+        //        ChangeAnim("idle");
+        //    }
+        //    transform.transform.rotation = Quaternion.LookRotation(new Vector3(_joystick.Horizontal,0,_joystick.Vertical));
+
+        //    transform.Translate(Vector3.right * _joystick.Horizontal * Time.deltaTime * _moveSpeed);
+        //    transform.Translate(Vector3.forward * _joystick.Vertical  * Time.deltaTime * _moveSpeed);
         //RaycastHit hit;
         //if (Physics.Raycast(transform.position+ Vector3.forward*0.5f, transform.TransformDirection(Vector3.down), out hit, Mathf.Infinity, layerMask))
         //{

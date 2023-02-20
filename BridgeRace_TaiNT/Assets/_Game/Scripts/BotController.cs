@@ -11,10 +11,12 @@ public class BotController : CharacterController
     Vector3 destination;
     NavMeshAgent agent;
     Color myColor;
+    bool isRun = true;
 
     // Start is called before the first frame update
     void Start()
     {
+
         // Cache agent component and destination
         myColor = GetComponent<Renderer>().material.color;
         agent = GetComponent<NavMeshAgent>();
@@ -30,6 +32,8 @@ public class BotController : CharacterController
             destination = target;
             agent.destination = target;
         }
+        
+
     }
 
     public void SetTarget(Vector3 pos)
@@ -42,10 +46,14 @@ public class BotController : CharacterController
     // Update is called once per frame
     void Update()
     {
+        {
+            ChangeAnim("run");
+        }
         if (target == Vector3.zero || Vector3.Distance(destination, transform.position) <= 1f )
         {
             SetTarget();
         }
+        
         // Update destination if the target moves one unit
         //if (Vector3.Distance(destination, target) > 0.1f)
         //{
