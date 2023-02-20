@@ -21,7 +21,6 @@ public class BridgeBrickController : MonoBehaviour
         {
             if (other.gameObject.GetComponent<Renderer>().material.color != GetComponent<Renderer>().material.color ) {
                 if (other.GetComponent<CharacterController>().isHaveBrick()) {
-                    Debug.Log("New Player");
                     wallCollider.GetComponent<Collider>().enabled=false;
                     other.GetComponent<CharacterController>().RemoveBrick();
                     GetComponent<Renderer>().material.color = other.gameObject.GetComponent<Renderer>().material.color;
@@ -30,7 +29,7 @@ public class BridgeBrickController : MonoBehaviour
                 {
                     wallCollider.GetComponent<Collider>().enabled = true;
                 }
-                else if (other.gameObject.transform.position.z < transform.position.z)
+                else if (other.gameObject.transform.position.z > transform.position.z)
                 {
                     wallCollider.GetComponent<Collider>().enabled = false;
                 }

@@ -9,9 +9,13 @@ public class CharacterController : MonoBehaviour
     [SerializeField] private Transform brickPos;
     [SerializeField] private GameObject brickPrefab;
     private Stack<GameObject> bricks=new Stack<GameObject>();
-    private int brickOwner = 0;
+    protected int brickOwner = 0;
     private float brickHeight=0.05f;
     [SerializeField] LayerMask layerMask;
+    protected FloorController currentFloor;
+
+    public FloorController CurrentFloor { get => currentFloor; set => currentFloor = value; }
+
     private void Start()
     {
     }
@@ -21,12 +25,13 @@ public class CharacterController : MonoBehaviour
         
     }
 
-    public void AddBrick()
+    public virtual void AddBrick()
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
         brickOwner++;
         //bricks.Push(Instantiate(brickPrefab,brickPos.position+brickOwner*Vector3.up*brickHeight,brickPrefab.transform.rotation,brickPos));
         bricks.Push(GameObjectPool.GetInstance().GetGameObject(brickPos.position + brickOwner * Vector3.up * brickHeight));
+        bricks.Peek().transform.rotation = transform.rotation;
         bricks.Peek().transform.SetParent(brickPos.transform);
         bricks.Peek().GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
     }
