@@ -16,7 +16,7 @@ public class CharacterController : MonoBehaviour
     private float brickHeight=0.15f;
     [SerializeField] LayerMask layerMask;
     protected FloorController currentFloor;
-    
+    protected bool isWin = false;
     public FloorController CurrentFloor { get => currentFloor; set => currentFloor = value; }
 
     private void Start()
@@ -59,5 +59,11 @@ public class CharacterController : MonoBehaviour
 
             anim.SetTrigger(currentAnimName);
         }
+    }
+
+    public void Win()
+    {
+        isWin = true;
+        ChangeAnim("dance");
     }
 }

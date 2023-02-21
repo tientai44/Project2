@@ -21,20 +21,22 @@ public class PlayerController : CharacterController
         {
             Vector3 direction = Vector3.RotateTowards(transform.forward, moveVector, _rotateSpeed * Time.deltaTime, 0.0f);
             transform.rotation = Quaternion.LookRotation(direction);
-            Debug.Log("Run");
             ChangeAnim("run");
         }
 
         else if (_joystick.Horizontal == 0 && _joystick.Vertical == 0)
         {
-            Debug.Log("Idle");
             ChangeAnim("idle");
         }
-        transform.position = Vector3.Lerp(transform.position, transform.position + moveVector,1);
+        transform.position = Vector3.Lerp(transform.position, transform.position + moveVector,1f);
     }
     // Update is called once per frame
     void Update()
     {
+        if (isWin)
+        {
+            return;
+        }
         Move();
         //    if(_joystick.Horizontal !=0 || _joystick.Vertical != 0)
         //    {

@@ -11,7 +11,6 @@ public class BotController : CharacterController
     Vector3 destination;
     NavMeshAgent agent;
     Color myColor;
-    bool isRun = true;
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +65,7 @@ public class BotController : CharacterController
     public override void AddBrick()
     {
         base.AddBrick();
-        if (brickOwner >= 15)
+        if (brickOwner >= 15 && SpawnManager.GetInstance().Floors.Count>currentFloor.IndexFloor+1)
         {
             switch (UnityEngine.Random.Range(0, 3))
             {
