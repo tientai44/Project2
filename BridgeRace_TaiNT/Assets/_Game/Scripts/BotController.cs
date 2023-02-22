@@ -65,19 +65,27 @@ public class BotController : CharacterController
     public override void AddBrick()
     {
         base.AddBrick();
-        if (brickOwner >= 15 && SpawnManager.GetInstance().Floors.Count>currentFloor.IndexFloor+1)
+        if (brickOwner >= 15 )
         {
-            switch (UnityEngine.Random.Range(0, 3))
+            if (SpawnManager.GetInstance().Floors.Count > currentFloor.IndexFloor + 1)
             {
-                case 0:
-                    SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(-6.5f, 1, -5));
-                    break;
-                case 1:
-                    SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(0f, 1, -5));
-                    break;
-                case 2:
-                    SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(+6.5f, 1, -5));
-                    break;
+                switch (UnityEngine.Random.Range(0, 3))
+                {
+                    case 0:
+                        SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(-6.5f, 1, -5));
+                        break;
+                    case 1:
+                        SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(0f, 1, -5));
+                        break;
+                    case 2:
+                        SetTarget(SpawnManager.GetInstance().Floors[currentFloor.IndexFloor + 1].transform.position + new Vector3(+6.5f, 1, -5));
+                        break;
+                }
+            }
+            else
+            {
+                SetTarget(SpawnManager.GetInstance().winPos.position);
+
             }
         }
     }

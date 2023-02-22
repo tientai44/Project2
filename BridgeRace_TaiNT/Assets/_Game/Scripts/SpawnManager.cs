@@ -19,7 +19,7 @@ public class SpawnManager : GOSingleton<SpawnManager>
     private List<List<Vector3>> l_pos = new List<List<Vector3>>();
     // Ki?m soát s? ng??i ch?i trong game
     [SerializeField] int playerNumber;
-
+    public Transform winPos; 
     public int PlayerNumber { get => playerNumber; set => playerNumber = value; }
     public List<FloorController> Floors { get => floors; set => floors = value; }
 
