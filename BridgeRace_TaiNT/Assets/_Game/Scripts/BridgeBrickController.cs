@@ -4,35 +4,48 @@ using UnityEngine;
 
 public class BridgeBrickController : MonoBehaviour
 {
-    [SerializeField] private GameObject wallCollider;
-
-    private void OnCollisionEnter(Collision collision)
-        {
-            if (collision.gameObject.tag == "Player")
-            {
-                Debug.Log("Player");
-                GetComponent<Renderer>().material.color= collision.gameObject.GetComponent<Renderer>().material.color;
-            }
-        }
-
+    [SerializeField] private GameObject wall;
+    private Collider wallCollider;
+    private Transform tf ;
+    private Material material;
+    //private void OnCollisionEnter(Collision collision)
+    //{
+    //    if (collision.gameObject.tag == "Player")
+    //    {
+    //        Debug.Log("Player");
+    //        GetComponent<Renderer>().material.color = collision.gameObject.GetComponent<Renderer>().material.color;
+    //    }
+    //}
+    private void Start()
+    {
+        wallCollider = wall.GetComponent<Collider>();
+        tf=transform;
+        material = GetComponent<Renderer>().material;
+    }
     private void OnTriggerEnter(Collider other)
-    {   
-        if (other.gameObject.tag == "Player" )
+    {
+        if (other.gameObject.CompareTag("Player"))
         {
-            if (other.gameObject.GetComponent<Renderer>().material.color != GetComponent<Renderer>().material.color ) {
-                if (other.GetComponent<CharacterController>().isHaveBrick()) {
-                    wallCollider.GetComponent<Collider>().enabled=false;
+            if (other.gameObject.GetComponent<Renderer>().material.color != GetComponent<Renderer>().material.color)
+            {
+                if (other.GetComponent<CharacterController>().isHaveBrick())
+                {
+                    wallCollider.enabled = false;
                     other.GetComponent<CharacterController>().RemoveBrick();
-                    GetComponent<Renderer>().material.color = other.gameObject.GetComponent<Renderer>().material.color;
+                    material.color = other.gameObject.GetComponent<Renderer>().material.color;
                 }
-                else if(other.gameObject.transform.position.z<transform.position.z)
+                else if (other.gameObject.transform.position.z < tf.position.z)
                 {
-                    wallCollider.GetComponent<Collider>().enabled = true;
+                    wallCollider.enabled = true;
                 }
-                else if (other.gameObject.transform.position.z > transform.position.z)
+                else if (other.gameObject.transform.position.z > tf.position.z)
                 {
-                    wallCollider.GetComponent<Collider>().enabled = false;
+                    wallCollider.enabled = false;
                 }
+            }
+            else
+            {
+                wallCollider.enabled = false;
             }
         }
     }

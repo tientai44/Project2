@@ -156,4 +156,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63c796c4c2f79f043b157b177deffac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallCollider: {fileID: 944407117}
+  wall: {fileID: 944407117}

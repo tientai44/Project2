@@ -15,7 +15,6 @@ public class BotController : CharacterController
     // Start is called before the first frame update
     void Start()
     {
-
         // Cache agent component and destination
         myColor = GetComponent<Renderer>().material.color;
         agent = GetComponent<NavMeshAgent>();
@@ -31,10 +30,7 @@ public class BotController : CharacterController
             destination = target;
             agent.destination = target;
         }
-        
-
     }
-
     public void SetTarget(Vector3 pos)
     {
         target = pos;
@@ -52,14 +48,6 @@ public class BotController : CharacterController
         {
             SetTarget();
         }
-        
-        // Update destination if the target moves one unit
-        //if (Vector3.Distance(destination, target) > 0.1f)
-        //{
-        //    destination = target;
-        //    agent.velocity *= _moveSpeed;
-        //    agent.destination = destination;
-        //}
 
     }
     public override void AddBrick()
@@ -85,12 +73,8 @@ public class BotController : CharacterController
             else
             {
                 SetTarget(SpawnManager.GetInstance().winPos.position);
-
             }
         }
     }
-    private void OnCollisionEnter(Collision collision)
-    {
 
-    }
 }

@@ -527,7 +527,7 @@ GameObject:
   - component: {fileID: 94387310}
   - component: {fileID: 94387309}
   m_Layer: 0
-  m_Name: Player3
+  m_Name: Bot2
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 133952035}
   - component: {fileID: 133952036}
   m_Layer: 0
-  m_Name: Player2
+  m_Name: Bot1
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1099,7 +1099,7 @@ GameObject:
   - component: {fileID: 351807233}
   - component: {fileID: 351807232}
   m_Layer: 0
-  m_Name: Player4
+  m_Name: Bot3
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1352,7 +1352,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d7b1f9a8e875b745b6ef0ad10aa38a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  winPos: {fileID: 0}
+  winPos: {fileID: 1880413982}
+  player: {fileID: 825182040}
+  _joystick: {fileID: 488712558}
 --- !u!4 &517933180
 Transform:
   m_ObjectHideFlags: 0
@@ -2041,7 +2043,6 @@ MonoBehaviour:
   layerMask:
     serializedVersion: 2
     m_Bits: 0
-  _joystick: {fileID: 488712558}
 --- !u!1001 &920085280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4144,7 +4145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1880413977}
   m_LocalRotation: {x: 0, y: -1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 7, z: 87.85}
+  m_LocalPosition: {x: 0, y: 6.7, z: 87.85}
   m_LocalScale: {x: 2, y: 0.1, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children:

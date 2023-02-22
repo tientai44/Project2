@@ -10,7 +10,7 @@ public class BrickController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player" && other.gameObject.GetComponent<Renderer>().material.color==gameObject.GetComponent<Renderer>().material.color)
+        if (other.CompareTag("Player") && other.gameObject.GetComponent<Renderer>().material.color==gameObject.GetComponent<Renderer>().material.color)
         {
             other.gameObject.GetComponent<CharacterController>().AddBrick();
             SpawnManager.GetInstance().StartCoroutine(SpawnManager.GetInstance().SpawnBrick(numFloor, gameObject.GetComponent<Renderer>().material.color, transform.position));

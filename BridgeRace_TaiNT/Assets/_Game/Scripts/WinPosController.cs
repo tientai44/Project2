@@ -6,15 +6,13 @@ using UnityEngine.AI;
 public class WinPosController : MonoBehaviour
 {
     
-    private void OnCollisionEnter(Collision collision)
-    {
-        
-    }
+ 
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log("Win Trigger");
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.CompareTag("Player"))
         {
+            GameController.GetInstance().IsGameOver = true;
             Debug.Log("Win");
             other.gameObject.GetComponent<NavMeshAgent>().destination = transform.position;
             other.gameObject.GetComponent<CharacterController>().Win();
