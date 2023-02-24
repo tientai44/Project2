@@ -12,7 +12,8 @@ public class WinPosController : MonoBehaviour
         Debug.Log("Win Trigger");
         if (other.gameObject.CompareTag("Player"))
         {
-            GameController.GetInstance().IsGameOver = true;
+            GameController.GetInstance().GameOver();
+            
             Debug.Log("Win");
             other.gameObject.GetComponent<NavMeshAgent>().destination = transform.position;
             other.gameObject.GetComponent<CharacterController>().Win();

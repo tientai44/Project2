@@ -16,4 +16,9 @@ public class GameController : GOSingleton<GameController>
     {
         player.Move(_joystick);
     }
+    public void GameOver()
+    {
+        isGameOver = true;
+        UIManager.GetInstance().OnEndGame();
+    }
 }

@@ -6,6 +6,15 @@ public class PlayerController : CharacterController
 {
     // Start is called before the first frame update
     private Vector3 moveVector;
+    private void Start()
+    {
+        OnInit();
+
+    }
+    public override void OnInit()
+    {
+        base.OnInit();
+    }
     public void Move(Joystick _joystick)
     {
         if (isWin)
@@ -26,5 +35,19 @@ public class PlayerController : CharacterController
             ChangeAnim("idle");
         }
         transform.position = Vector3.Lerp(transform.position, transform.position + moveVector,1f);
+    }
+
+    public void Fall()
+    {
+        ChangeAnim("falltoland");
+        brickOwner = 0;
+        foreach(GameObject brick in bricks)
+        {
+            brick.transform.SetParent(null);
+            brick.GetComponent<BrickController>().isFall = true;
+            brick.transform.position = Vector3.MoveTowards(brick.transform.position, brick.transform.position + new Vector3(Random.Range(0,1f),0, Random.Range(0, 1f)),1f) ;
+            brick.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        bricks.Clear();
     }
 }

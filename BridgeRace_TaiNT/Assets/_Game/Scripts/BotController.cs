@@ -8,6 +8,8 @@ using UnityEngine.AI;
 public class BotController : CharacterController
 {
     [SerializeField] private Vector3 target;
+    int brickTarget = 16;
+    private IState currentState;
     Vector3 destination;
     NavMeshAgent agent;
     Color myColor;
@@ -19,10 +21,17 @@ public class BotController : CharacterController
         myColor = GetComponent<Renderer>().material.color;
         agent = GetComponent<NavMeshAgent>();
         destination = agent.destination;
-
+        OnInit();
+    }
+    public override void OnInit()
+    {
+        base.OnInit();
+        ChangeState(new IdleState());
     }
     public void SetTarget()
     {
+
+        ChangeAnim("run");
         if (CurrentFloor != null && CurrentFloor.DictColorPos[myColor].Count > 0)
         {
             int index = UnityEngine.Random.Range(0, CurrentFloor.DictColorPos[myColor].Count);
@@ -33,28 +42,47 @@ public class BotController : CharacterController
     }
     public void SetTarget(Vector3 pos)
     {
+        ChangeAnim("run");
         target = pos;
         destination = target;
         agent.destination = target;
-
     }
     // Update is called once per frame
     void Update()
     {
+        //{
+        //    ChangeAnim("run");
+        //}
+        //if (target == Vector3.zero || Vector3.Distance(destination, transform.position) <= 1f )
+        //{
+        //    SetTarget();
+        //}
+        if (GameController.GetInstance().IsGameOver)
         {
-            ChangeAnim("run");
+            StopMoving();
         }
-        if (target == Vector3.zero || Vector3.Distance(destination, transform.position) <= 1f )
+        if (Vector3.Distance(destination, transform.position) < 1f)
         {
-            SetTarget();
+            ChangeState(new IdleState());
         }
-
+        if (currentState != null)
+        {
+            currentState.OnExecute(this);
+        }
     }
     public override void AddBrick()
     {
+
         base.AddBrick();
-        if (brickOwner >= 15 )
+        //if (brickOwner <= brickTarget)
+        //{
+        //    ChangeAnim("idle");
+        //    ChangeState(new IdleState());
+        //}
+
+        if (brickOwner >= brickTarget)
         {
+            ChangeState(null);
             if (SpawnManager.GetInstance().Floors.Count > currentFloor.IndexFloor + 1)
             {
                 switch (UnityEngine.Random.Range(0, 3))
@@ -75,6 +103,31 @@ public class BotController : CharacterController
                 SetTarget(SpawnManager.GetInstance().winPos.position);
             }
         }
-    }
 
+    }
+    public void StopMoving()
+    {
+        ChangeAnim("idle");
+        agent.destination = transform.position;
+    }
+    public override void RemoveBrick()
+    {
+        base.RemoveBrick();
+        if (brickOwner <= 0)
+        {
+            SetTarget();
+        }
+    }
+    public void ChangeState(IState newState)
+    {
+        if (currentState != null)
+        {
+            currentState.OnExit(this);
+        }
+        currentState = newState;
+        if (currentState != null)
+        {
+            currentState.OnEnter(this);
+        }
+    }
 }

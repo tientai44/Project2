@@ -9,7 +9,8 @@ public class CharacterController : MonoBehaviour
     [SerializeField] protected float _rotateSpeed;
     [SerializeField] private Transform brickPos;
     [SerializeField] private GameObject brickPrefab;
-    private Stack<GameObject> bricks=new Stack<GameObject>();
+    [SerializeField] private Transform startPos;
+    protected Stack<GameObject> bricks=new Stack<GameObject>();
     string currentAnimName;
     [SerializeField] Animator anim;
     protected int brickOwner = 0;
@@ -18,16 +19,12 @@ public class CharacterController : MonoBehaviour
     protected FloorController currentFloor;
     protected bool isWin = false;
     public FloorController CurrentFloor { get => currentFloor; set => currentFloor = value; }
+    public Stack<GameObject> Bricks { get => bricks; set => bricks = value; }
 
-    private void Start()
+    public virtual void OnInit()
     {
+        transform.position = startPos.position;
     }
-    private void Update()
-    {
-        
-        
-    }
-
     public virtual void AddBrick()
     {
         GetComponent<Rigidbody>().velocity = Vector3.zero;
@@ -38,7 +35,7 @@ public class CharacterController : MonoBehaviour
         bricks.Peek().transform.SetParent(brickPos.transform);
         bricks.Peek().GetComponent<Renderer>().material.color = GetComponent<Renderer>().material.color;
     }
-    public void RemoveBrick()
+    public virtual void RemoveBrick()
     {
         bricks.Peek().transform.SetParent(null);
         GameObjectPool.GetInstance().ReturnGameObject(bricks.Pop());
@@ -65,5 +62,21 @@ public class CharacterController : MonoBehaviour
     {
         isWin = true;
         ChangeAnim("dance");
+    }
+    //private void OnTriggerEnter(Collider other)
+    //{
+    //    PlayerController player;
+    //    if (other.TryGetComponent<PlayerController>(out player))
+    //    {
+    //        player.Fall();
+    //    }
+    //}
+    private void OnCollisionEnter(Collision collision)
+    {
+        PlayerController player;
+        if (collision.gameObject.TryGetComponent<PlayerController>(out player))
+        {
+            player.Fall();
+        }
     }
 }

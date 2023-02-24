@@ -20,6 +20,7 @@ public class GameObjectPool : GOSingleton<GameObjectPool>
             GameObject go = pools[0];
             go.SetActive(true);
             go.transform.position = pos;
+            go.transform.rotation = Prefabs.transform.rotation;
             pools.RemoveAt(0);
             return go;
         }
