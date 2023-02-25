@@ -29,6 +29,7 @@ public class GameObjectPool : GOSingleton<GameObjectPool>
     public void ReturnGameObject(GameObject go)
     {
         go.transform.rotation = Prefabs.transform.rotation;
+        go.GetComponent<BrickController>().isFalled = false;
         pools.Add(go);
         go.SetActive(false);
     }
