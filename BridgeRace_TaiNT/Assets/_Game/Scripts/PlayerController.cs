@@ -8,6 +8,9 @@ public class PlayerController : CharacterController
     private Vector3 moveVector;
     private bool isFall = false;
     private Vector3 fallVector;
+
+    public bool IsFall { get => isFall; set => isFall = value; }
+
     private void Start()
     {
         OnInit();

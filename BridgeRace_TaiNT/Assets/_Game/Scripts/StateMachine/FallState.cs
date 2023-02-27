@@ -2,22 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class IdleState : IState
+public class FallState : IState
 {
-    float randomTime;
-    float timer;
+    float delayTime = 2f;
+    float timer=0;
     public void OnEnter(BotController bot)
     {
         timer = 0;
-        bot.ChangeAnim("idle");
+        bot.ChangeAnim("falltoland");
+        bot.Fall();
         bot.StopMoving();
-        randomTime = Random.Range(0, 1f);
     }
 
     public void OnExecute(BotController bot)
     {
-        timer += Time.deltaTime;
-        if (timer > randomTime)
+        timer+=Time.deltaTime;
+        if (timer > delayTime)
         {
             bot.ChangeState(new PatrolState());
         }

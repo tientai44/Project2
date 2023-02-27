@@ -46,7 +46,7 @@ public class CharacterController : MonoBehaviour
         return bricks.Count > 0;
     }
 
-    protected void ChangeAnim(string animName)
+    public void ChangeAnim(string animName)
     {
         if (currentAnimName != animName)
         {
@@ -74,9 +74,21 @@ public class CharacterController : MonoBehaviour
     private void OnCollisionEnter(Collision collision)
     {
         PlayerController player;
+        BotController bot;
         if (collision.gameObject.TryGetComponent<PlayerController>(out player))
         {
-            player.Fall();
+            if (brickOwner >= player.brickOwner)
+            {
+                player.Fall();
+            }
+        }
+        if (collision.gameObject.TryGetComponent<BotController>(out bot))
+        {
+            if (brickOwner >= bot.brickOwner)
+            {
+                if(bot.CurrentState is not FallState)
+                    bot.ChangeState(new FallState());
+            }
         }
     }
 }

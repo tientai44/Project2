@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Schema;
 using UnityEngine;
 using UnityEngine.AI;
+using Random = UnityEngine.Random;
 
 public class BotController : CharacterController
 {
@@ -14,6 +15,8 @@ public class BotController : CharacterController
     NavMeshAgent agent;
     Color myColor;
 
+    public IState CurrentState { get => currentState; set => currentState = value; }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,31 +26,6 @@ public class BotController : CharacterController
         destination = agent.destination;
         OnInit();
     }
-    public override void OnInit()
-    {
-        base.OnInit();
-        ChangeState(new IdleState());
-    }
-    public void SetTarget()
-    {
-
-        ChangeAnim("run");
-        if (CurrentFloor != null && CurrentFloor.DictColorPos[myColor].Count > 0)
-        {
-            int index = UnityEngine.Random.Range(0, CurrentFloor.DictColorPos[myColor].Count);
-            target = CurrentFloor.DictColorPos[myColor][index];
-            destination = target;
-            agent.destination = target;
-        }
-    }
-    public void SetTarget(Vector3 pos)
-    {
-        ChangeAnim("run");
-        target = pos;
-        destination = target;
-        agent.destination = target;
-    }
-    // Update is called once per frame
     void Update()
     {
         //{
@@ -70,9 +48,65 @@ public class BotController : CharacterController
             currentState.OnExecute(this);
         }
     }
+    public override void OnInit()
+    {
+        base.OnInit();
+        ChangeState(new IdleState());
+    }
+    public void SetTarget()
+    {
+        ChangeAnim("run");
+        if (CurrentFloor != null && CurrentFloor.DictColorPos[myColor].Count > 0)
+        {
+            int index = UnityEngine.Random.Range(0, CurrentFloor.DictColorPos[myColor].Count);
+            target = CurrentFloor.DictColorPos[myColor][index];
+            destination = target;
+            agent.destination = target;
+        }
+    }
+    public void Fall()
+    {
+        brickOwner = 0;
+        foreach (GameObject brick in bricks)
+        {
+            brick.GetComponent<BrickController>().isFalling = true;
+            brick.transform.SetParent(null);
+            brick.GetComponent<Renderer>().material.color = Color.gray;
+            switch (Random.Range(0, 4))
+            {
+                case 0:
+                    brick.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(1f, 2f), 0, Random.Range(1f, 2f));
+                    break;
+                case 1:
+                    brick.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(-2f, -1f), 0, Random.Range(-2f, -1f));
+                    break;
+                case 2:
+                    brick.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(1f, 2f), 0, Random.Range(-2f, -1f));
+                    break;
+                case 3:
+                    brick.GetComponent<Rigidbody>().velocity = new Vector3(Random.Range(1f, 2f), 0, Random.Range(1f, 2f));
+                    break;
+            }
+            brick.GetComponent<Rigidbody>().isKinematic = false;
+        }
+        bricks.Clear();
+      
+    }
+    public void SetTarget(Vector3 pos)
+    {
+        ChangeAnim("run");
+        target = pos;
+        destination = target;
+        agent.destination = target;
+    }
+    // Update is called once per frame
+    
     public override void AddBrick()
     {
-
+        if (currentState is FallState)
+        {
+            return;
+        }
         base.AddBrick();
         //if (brickOwner <= brickTarget)
         //{
@@ -107,7 +141,7 @@ public class BotController : CharacterController
     }
     public void StopMoving()
     {
-        ChangeAnim("idle");
+
         agent.destination = transform.position;
     }
     public override void RemoveBrick()
@@ -120,6 +154,7 @@ public class BotController : CharacterController
     }
     public void ChangeState(IState newState)
     {
+        
         if (currentState != null)
         {
             currentState.OnExit(this);
