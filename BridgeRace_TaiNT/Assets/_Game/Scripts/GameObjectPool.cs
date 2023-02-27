@@ -6,13 +6,14 @@ public class GameObjectPool : GOSingleton<GameObjectPool>
 {
     [SerializeField]private GameObject Prefabs;
     [SerializeField]private  List<GameObject> pools = new List<GameObject>();
-
+    [SerializeField] private List<GameObject> activePools = new List<GameObject>();
     public GameObject GetGameObject(Vector3 pos)
     {
         if (pools.Count == 0)
         {
             GameObject go = Instantiate(Prefabs, pos, Prefabs.transform.rotation);
             go.SetActive(true);
+            activePools.Add(go);
             return go;
         }
         else
@@ -22,6 +23,7 @@ public class GameObjectPool : GOSingleton<GameObjectPool>
             go.transform.position = pos;
             go.transform.rotation = Prefabs.transform.rotation;
             pools.RemoveAt(0);
+            activePools.Add(go);
             return go;
         }
     }
@@ -30,9 +32,17 @@ public class GameObjectPool : GOSingleton<GameObjectPool>
     {
         go.transform.rotation = Prefabs.transform.rotation;
         go.GetComponent<BrickController>().isFalled = false;
+        activePools.Remove(go);
         pools.Add(go);
         go.SetActive(false);
     }
 
+    public void ClearBrickActive()
+    {
+        while(activePools.Count>0)
+        {
+            ReturnGameObject(activePools[0]);
+        }
+    }
 }
 

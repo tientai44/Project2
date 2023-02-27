@@ -26,14 +26,17 @@ public class SpawnManager : GOSingleton<SpawnManager>
     private void Start()
     {
         GetInstance();
-
+        OnInit();
+  
+    }
+    public void OnInit()
+    {
         for (int i = 0; i < floors.Count; i++)
         {
             l_pos.Add(new List<Vector3>());
             SetSpawnPos(i);
         }
     }
-
     void SetSpawnPos(int floor)
     {
         // Add cac vi tri spawn cho g?ch
@@ -97,4 +100,5 @@ public class SpawnManager : GOSingleton<SpawnManager>
             floors[floor].DictColorPos[temp[index]].Add(go.transform.position);
         }
     }
+    
 }

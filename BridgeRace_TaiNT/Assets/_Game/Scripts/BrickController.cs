@@ -11,6 +11,10 @@ public class BrickController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        if (GameController.GetInstance().IsGameOver)
+        {
+            return;
+        }
         if (other.CompareTag("Player") )
         {
             if (isFalling)

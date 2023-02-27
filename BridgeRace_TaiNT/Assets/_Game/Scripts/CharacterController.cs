@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
+
 public class CharacterController : MonoBehaviour
 {
     [SerializeField] protected Rigidbody _rigidbody;
@@ -23,7 +25,17 @@ public class CharacterController : MonoBehaviour
 
     public virtual void OnInit()
     {
+        isWin = false;
+        ClearBrick();
         transform.position = startPos.position;
+        
+    }
+    public void ClearBrick()
+    {
+        while (brickOwner > 0)
+        {
+            RemoveBrick();
+        }
     }
     public virtual void AddBrick()
     {

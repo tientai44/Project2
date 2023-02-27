@@ -6,6 +6,7 @@ public class GameController : GOSingleton<GameController>
 {
     [SerializeField] Transform winPos;
     [SerializeField] private PlayerController player;
+    [SerializeField] private List<BotController> bots;
     [SerializeField] private FixedJoystick _joystick;
     bool isGameOver = false;
 
@@ -20,5 +21,18 @@ public class GameController : GOSingleton<GameController>
     {
         isGameOver = true;
         UIManager.GetInstance().OnEndGame();
+    }
+    public void NewLevel()
+    {
+        LevelManager.GetInstance().GotoNextLevel();
+        isGameOver = false;
+        UIManager.GetInstance().ButtonNewLevel();
+        SpawnManager.GetInstance().OnInit();
+        player.OnInit();
+        foreach(BotController bot in bots)
+        {
+            bot.OnInit();
+        }
+        GameObjectPool.GetInstance().ClearBrickActive();
     }
 }

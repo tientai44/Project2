@@ -10,4 +10,8 @@ public class UIManager : GOSingleton<UIManager>
     {
         endGamePanel.SetActive(true);
     }
+    public void ButtonNewLevel()
+    {
+        endGamePanel.SetActive(false);
+    }
 }

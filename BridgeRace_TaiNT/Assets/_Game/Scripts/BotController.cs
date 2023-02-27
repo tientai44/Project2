@@ -38,10 +38,12 @@ public class BotController : CharacterController
         if (GameController.GetInstance().IsGameOver)
         {
             StopMoving();
+            return;
         }
-        if (Vector3.Distance(destination, transform.position) < 1f)
+        if (Vector3.Distance(destination, transform.position) < 1f && currentState is not IdleState)
         {
             ChangeState(new IdleState());
+            return;
         }
         if (currentState != null)
         {
